@@ -140,7 +140,7 @@ public class TrybeGamesController
     // 2. Crie a funcionalidade de adicionar um novo estúdio de jogos ao banco de dados
     public void AddGameStudio()
     {
-        Console.WriteLine("Digite o nome do jogador:");
+        Console.WriteLine("Digite o nome do Estúdio:");
         string name = Console.ReadLine();
 
         var newGameStudio = new GameStudio
@@ -156,8 +156,31 @@ public class TrybeGamesController
     // 3. Crie a funcionalidade de adicionar novo Jogo ao Banco de dados
     public void AddGame()
     {
-        // implementar
-        Console.WriteLine("Ainda não é possível realizar essa funcionalidade!");
+        Console.WriteLine("Digite o nome do jogo:");
+        string name = Console.ReadLine();
+
+        Console.WriteLine("Digite a data de lançamento do jogo (dd-mm-yyyy):");
+        DateTime releaseDate = Convert.ToDateTime(Console.ReadLine(), new CultureInfo("pt-BR"));
+
+        Console.WriteLine("Digite o tipo do jogo:");
+        for (int i = 0; i < Enum.GetNames(typeof(GameType)).Length; i++)
+        {
+            Console.WriteLine($"# {i} - {Enum.GetName(typeof(GameType), i)}");
+        }
+
+        GameType gameType = (GameType)Convert.ToInt16(Console.ReadLine());
+
+        int nextGameId = (database.Games.Count > 0) ? (database.Games.Max(g => g.Id) + 1) : 1;
+
+        Game newGame = new()
+        {
+            Id = nextGameId,
+            Name = name,
+            ReleaseDate = releaseDate,
+            GameType = gameType,
+        };
+        database.Games.Add(newGame);
+        Console.WriteLine("Novo jogo adicionado com sucesso!");
     }
 
     public void ChangeGameStudio(Game game)
